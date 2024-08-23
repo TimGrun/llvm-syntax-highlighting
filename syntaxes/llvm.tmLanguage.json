@@ -73,7 +73,7 @@
 				},
 				{
 					"name": "storage.type.primitive.llvm",
-					"match": "\\b(?<![%\\.])(i\\d+|void|half|bfloat|float|double|fp128|x86_fp80|ppc_fp128)\\b"
+					"match": "\\b(?<![%\\.])(i\\d+|ptr|void|half|bfloat|float|double|fp128|x86_fp80|ppc_fp128)\\b"
 				},
 				{
 					"name": "storage.type.vector.llvm",

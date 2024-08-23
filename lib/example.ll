@@ -31,6 +31,17 @@ define double @foo(double %a) #0
   ret double %3
 }
 
+@0 = private unnamed_addr constant [13 x i8] c"Hello World!\00"
+
+; Ptr type examples
+declare i32 @puts(ptr)
+
+define i1 @main() {
+0:
+  call i32 @puts(i64 ptr @0)
+  ret i1 0
+}
+
 ; Vector, attribute, struct examples
 define double @bar(%struct.mystruct* byval nocapture readonly align 8 %a)
 {
