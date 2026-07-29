@@ -1,285 +1,199 @@
 {
-	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
-	"name": "LLVM",
-	"patterns": [
-		{
-			"include": "#function-headers"
-		},
-		{
-			"include": "#keywords"
-		},
-		{
-			"include": "#strings"
-		},
-		{
-			"include": "#decorators"
-		},
-		{
-			"include": "#numbers"
-		},
-		{
-			"include": "#comments"
-		},
-		{
-			"include": "#literals"
-		},
-		{
-			"include": "#punctuation"
-		},
-		{
-			"include": "#block-labels"
-		},
-		{
-			"include": "#types"
-		}
-	],
-	"repository": {
-		"function-headers": {
-			"begin": "(@\\w*)(\\()",
-			"end": "\\)",
-			"beginCaptures": {
-				"1": {
-					"name": "entity.name.function"
-				},
-				"2": {
-					"name": "punctuation.separator.parameters.begin.llvm"
-				}
-			},
-			"endCaptures": {
-				"0": {
-					"name": "punctuation.separator.parameters.end.llvm"
-				}
-			},
-			"patterns": [
-				{
-					"include": "#punctuation"
-				},
-				{
-					"include": "#numbers"
-				},
-				{
-					"include": "#types"
-				},
-				{
-					"include": "#decorators"
-				}
-			]
-		},
-		"types": {
-			"patterns": [
-				{
-					"name": "entity.name.type.llvm",
-					"match": "( *)((%)struct(\\.)\\w*)\\b"
-				},
-				{
-					"name": "storage.type.primitive.llvm",
-					"match": "\\b(?<![%\\.])(i\\d+|ptr|void|half|bfloat|float|double|fp128|x86_fp80|ppc_fp128)\\b"
-				},
-				{
-					"name": "storage.type.vector.llvm",
-					"begin": "<",
-					"end": ">"
-				},
-				{
-					"name": "storage.type.array.llvm",
-					"match": "(\\[[0-9]+ +x +.+?\\]+)"
-				}
-			]
-		},
-		"literals": {
-			"patterns": [
-				{
-					"name": "constant.language.llvm",
-					"match": "\\b(true|false|null|none)\\b"
-				},
-				{
-					"include": "#numbers"
-				}
-			]
-		},
-		"block-labels": {
-			"match": "(([a-zA-Z0-9.-]*:)(\n| ))",
-			"captures": {
-				"2": {
-					"name": "constant.language.symbol.llvm"
-				},
-				"3": {
-					"name": "punctuation.separator.colon.llvm"
-				}
-			}
-		},
-		"keywords": {
-			"patterns": [
-				{
-					"name": "keyword.control.flow.llvm",
-					"match": "\\b(?<![%\\.])(ret|call)\\b"
-				},
-				{
-					"name": "keyword.other.llvm",
-					"match": "\\b(?<![%\\.])(add|alloca|and|ashr|atomicrmw|attributes|bitcast|call|cmpxchg|declare|exact|extractelement|extractvalue|fadd|fcmp|fdiv|fence|fmul|fpext|fptosi|fptoui|fptrunc|frem|fsub|getelementptr|global|icmp|indirectbr|insertelement|insertvalue|inttoptr|invoke|landingpad|load|lshr|mul|one|or|ord|ptrtoint|resume|ret|sdiv|select|sext|shl|shufflevector|sitofp|srem|store|sub|switch|target|trunc|type|udiv|uitofp|unreachable|unwind|urem|va_arg|xor|zext)\\b"
-				},
-				{
-					"name": "storage.type.function.llvm",
-					"match": "\\b(define)\\b"
-				},
-				{
-					"name": "keyword.operator.assignment",
-					"match": "="
-				},
-				{
-					"name": "keyword.operator",
-					"match": "\\b(to)\\b"
-				},
-				{
-					"begin": "\\b(br)\\b",
-					"end": "\\n",
-					"beginCaptures": {
-						"0": {
-							"name": "keyword.control.flow.llvm"
-						}
-					},
-					"patterns": [
-						{
-							"include": "#punctuation"
-						},
-						{
-							"include": "#types"
-						},
-						{
-							"include": "#decorators"
-						},
-						{
-							"match": "\\b(label +(%[a-zA-Z0-9.-]*))\\b",
-							"captures": {
-								"2": {
-									"name": "constant.language.symbol.llvm"
-								}
-							}
-						}
-					]
-				},
-				{
-					"begin": "\\b(phi)\\b",
-					"end": "\\n",
-					"beginCaptures": {
-						"0": {
-							"name": "keyword.control.flow.llvm"
-						}
-					},
-					"patterns": [
-						{
-							"include": "#punctuation"
-						},
-						{
-							"include": "#types"
-						},
-						{
-							"include": "#numbers"
-						},
-						{
-							"name": "punctuation.definition.block.begin.llvm",
-							"match": "\\["
-						},
-						{
-							"match": "( *(%[a-zA-Z0-9.-]*) *(\\]))",
-							"captures": {
-								"2": {
-									"name": "constant.language.symbol.llvm"
-								},
-								"3": {
-									"name": "punctuation.section.block.end.llvm"
-								}
-							}
-						}
-					]
-				}
-			]
-		},
-		"strings": {
-			"name": "string.quoted.double.llvm",
-			"begin": "\"",
-			"end": "\""
-		},
-		"numbers": {
-			"patterns": [
-				{
-					"name": "constant.numeric.integer.llvm",
-					"match": "\\b(?<![%!.#+])(\\d+)(?!\\.)\\b"
-				},
-				{
-					"name": "constant.numeric.float.llvm",
-					"match": "\\b((\\d+)\\.(\\d+))\\b"
-				},
-				{
-					"name": "constant.numeric.hex.llvm",
-					"match": "\\b(?<![%!#])(0(x|X)[0-9a-fA-F]+)\\b"
-				},
-				{
-					"name": "constant.numeric.hex.llvm",
-					"match": "\\b((\\d+)\\.(\\d+)e\\+(\\d+))\\b"
-				}
-			]
-		},
-		"comments": {
-			"patterns": [
-				{
-					"name": "comment.llvm",
-					"match": ";.*$"
-				}
-			]
-		},
-		"decorators": {
-			"patterns": [
-				{
-					"name": "entity.other.attribute-name",
-					"match": "((#|!)[a-zA-Z0-9.]+)\\b"
-				}
-			]
-		},
-		"punctuation": {
-			"patterns": [
-				{
-						"name": "punctuation.separator.colon.llvm",
-						"match": ":"
-				},
-				{
-						"name": "punctuation.separator.element.llvm",
-						"match": ","
-				},
-				{
-					"name": "punctuation.separator.parameters.begin.llvm",
-					"match": "\\("
-				},
-				{
-					"name": "punctuation.separator.parameters.end.llvm",
-					"match": "\\)"
-				},
-				{
-					"name": "punctuation.section.block.begin.bracket.curly.llvm",
-					"match": "{"
-				},
-				{
-					"name": "punctuation.section.block.end.bracket.curly.llvm",
-					"match": "}"
-				},
-				{
-					"name": "punctuation.definition.decorator.llvm",
-					"match": "(\\*)"
-				},
-				{
-					"name": "string.interpolated.llvm",
-					"match": "!(?=\")"
-				},
-				{
-					"name": "punctuation.section.block.begin.llvm",
-					"match": "!(?={)"
-				},
-				{
-					"name": "punctuation.definition.destructure.llvm",
-					"match": "\\.\\.\\."
-				}
-			]
-		}
-	},
-	"scopeName": "source.ll"
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "LLVM IR",
+  "scopeName": "source.ll",
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#strings" },
+    { "include": "#labels" },
+    { "include": "#symbols" },
+    { "include": "#types" },
+    { "include": "#instructions" },
+    { "include": "#modifiers" },
+    { "include": "#constants" },
+    { "include": "#numbers" },
+    { "include": "#punctuation" }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.semicolon.llvm",
+          "match": ";.*$"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.llvm",
+          "begin": "(?:c)?\"",
+          "beginCaptures": {
+            "0": { "name": "punctuation.definition.string.begin.llvm" }
+          },
+          "end": "\"",
+          "endCaptures": {
+            "0": { "name": "punctuation.definition.string.end.llvm" }
+          },
+          "patterns": [
+            {
+              "name": "constant.character.escape.llvm",
+              "match": "\\\\(?:[0-9A-Fa-f]{2}|[\\\\\"])"
+            }
+          ]
+        }
+      ]
+    },
+    "labels": {
+      "patterns": [
+        {
+          "match": "^\\s*([-a-zA-Z$._][-a-zA-Z$._0-9]*|[0-9]+|\"(?:[^\"\\\\]|\\\\.)+\")(:)",
+          "captures": {
+            "1": { "name": "entity.name.label.llvm" },
+            "2": { "name": "punctuation.separator.colon.llvm" }
+          }
+        },
+        {
+          "match": "\\b(label)\\s+(%[-a-zA-Z$._0-9]+|%\"(?:[^\"\\\\]|\\\\.)+\")",
+          "captures": {
+            "1": { "name": "storage.type.llvm" },
+            "2": { "name": "variable.other.label.llvm" }
+          }
+        }
+      ]
+    },
+    "symbols": {
+      "patterns": [
+        {
+          "name": "entity.name.function.llvm",
+          "match": "@(?:[-a-zA-Z$._][-a-zA-Z$._0-9]*|[0-9]+|\"(?:[^\"\\\\]|\\\\.)+\")(?=\\s*\\()"
+        },
+        {
+          "name": "entity.name.type.llvm",
+          "match": "%(?:[-a-zA-Z$._][-a-zA-Z$._0-9]*|[0-9]+|\"(?:[^\"\\\\]|\\\\.)+\")(?=\\s*=\\s*type\\b)"
+        },
+        {
+          "name": "entity.name.type.llvm",
+          "match": "%\"?(?:struct|class|union)\\.[-a-zA-Z$._0-9]+\"?"
+        },
+        {
+          "name": "variable.other.global.llvm",
+          "match": "@(?:[-a-zA-Z$._][-a-zA-Z$._0-9]*|[0-9]+|\"(?:[^\"\\\\]|\\\\.)+\")"
+        },
+        {
+          "name": "variable.other.local.llvm",
+          "match": "%(?:[-a-zA-Z$._][-a-zA-Z$._0-9]*|[0-9]+|\"(?:[^\"\\\\]|\\\\.)+\")"
+        },
+        {
+          "name": "variable.other.attribute-group.llvm",
+          "match": "#[0-9]+\\b"
+        },
+        {
+          "name": "variable.other.comdat.llvm",
+          "match": "\\$(?:[-a-zA-Z$._][-a-zA-Z$._0-9]*|\"(?:[^\"\\\\]|\\\\.)+\")"
+        },
+        {
+          "match": "(!)([A-Za-z][A-Za-z0-9_]*)(?=\\s*\\()",
+          "captures": {
+            "1": { "name": "punctuation.definition.metadata.llvm" },
+            "2": { "name": "entity.name.type.metadata.llvm" }
+          }
+        },
+        {
+          "name": "variable.other.metadata.llvm",
+          "match": "!(?:[-a-zA-Z$._][-a-zA-Z$._0-9]*|[0-9]+)\\b"
+        }
+      ]
+    },
+    "types": {
+      "patterns": [
+        {
+          "name": "storage.type.primitive.llvm",
+          "match": "\\b(?:void|half|bfloat|float|double|x86_fp80|fp128|ppc_fp128|label|metadata|x86_mmx|x86_amx|token|ptr|opaque|i[0-9]+)\\b"
+        },
+        {
+          "name": "storage.type.aggregate.llvm",
+          "match": "\\btype\\b"
+        },
+        {
+          "match": "\\b(addrspace)(\\()([0-9]+)(\\))",
+          "captures": {
+            "1": { "name": "storage.modifier.llvm" },
+            "2": { "name": "punctuation.section.group.begin.llvm" },
+            "3": { "name": "constant.numeric.integer.llvm" },
+            "4": { "name": "punctuation.section.group.end.llvm" }
+          }
+        }
+      ]
+    },
+    "instructions": {
+      "patterns": [
+        {
+          "name": "keyword.control.llvm",
+          "match": "\\b(?:br|callbr|catchret|catchswitch|cleanupret|indirectbr|invoke|resume|ret|switch|unreachable)\\b"
+        },
+        {
+          "name": "keyword.operator.comparison.llvm",
+          "match": "\\b(?:eq|ne|ugt|uge|ult|ule|sgt|sge|slt|sle|oeq|ogt|oge|olt|ole|one|ord|ueq|une|uno)\\b"
+        },
+        {
+          "name": "keyword.instruction.llvm",
+          "match": "(?<![-a-zA-Z$._0-9])(?:#dbg_(?:assign|declare|label|value)|add|addrspacecast|alloca|and|ashr|atomicrmw|bitcast|br|call|callbr|catchpad|catchswitch|catchret|cleanuppad|cleanupret|cmpxchg|extractelement|extractvalue|fadd|fcmp|fdiv|fence|fmax|fmin|fmul|fneg|fpext|fptosi|fptoui|fptrunc|freeze|frem|fsub|getelementptr|icmp|indirectbr|insertelement|insertvalue|inttoptr|invoke|landingpad|load|lshr|max|min|mul|nand|or|phi|ptrtoint|resume|ret|sdiv|select|sext|shl|shufflevector|sitofp|srem|store|sub|switch|trunc|udec_wrap|udiv|uinc_wrap|uitofp|umax|umin|unreachable|urem|usub_cond|usub_sat|va_arg|xchg|xor|zext)(?![-a-zA-Z$._0-9])"
+        }
+      ]
+    },
+    "modifiers": {
+      "patterns": [
+        {
+          "name": "storage.modifier.llvm",
+          "match": "\\b(?:acq_rel|acquire|afn|align|alignstack|allocsize|alwaysinline|amdgpu_cs|amdgpu_es|amdgpu_gfx|amdgpu_gs|amdgpu_kernel|amdgpu_ls|amdgpu_ps|amdgpu_vs|anyregcc|appending|argmem|argmemonly|arm_aapcs_vfpcc|arm_aapcscc|arm_apcscc|atomic|available_externally|builtin|byref|byval|c|caller|cc|ccc|cfguard_checkcc|cold|coldcc|common|constant|contract|convergent|declare|define|dereferenceable|dereferenceable_or_null|disjoint|distinct|dllexport|dllimport|dso_local|dso_preemptable|errnomem|exact|extern_weak|external|externally_initialized|fast|fastcc|from|gc|global|hidden|hot|immarg|inaccessiblemem|inaccessiblemem_or_argmemonly|inaccessiblememonly|inalloca|inbounds|initialexec|inlinehint|inreg|intel_ocl_bicc|inteldialect|internal|jumptable|linkonce|linkonce_odr|local_unnamed_addr|localdynamic|localexec|minsize|module|monotonic|mustprogress|musttail|naked|ninf|nnan|no_cfi|noalias|nobuiltin|nocallback|nocapture|nocf_check|noduplicate|nofree|noimplicitfloat|noinline|noipa|nomerge|nneg|nooutline|nonlazybind|nonnull|noprofile|norecurse|noredzone|noreturn|nosanitize_bounds|nosanitize_coverage|nosync|noundef|nounwind|nsw|nsz|null_pointer_is_valid|nuw|optdebug|optforfuzzing|optnone|optsize|other|personality|preallocated|private|protected|ptrauth|ptx_device|ptx_kernel|read|readnone|readonly|readwrite|reassoc|release|returned|returns_twice|safestack|sanitize_address|sanitize_alloc_token|sanitize_hwaddress|sanitize_memory|sanitize_memtag|sanitize_thread|section|seq_cst|shadowcallstack|sideeffect|signext|speculatable|speculative_load_hardening|spir_func|spir_kernel|splat|sret|ssp|sspreq|sspstrong|strictfp|swiftcc|swifterror|swiftself|swifttailcc|syncscope|tail|tailcc|thread_local|to|unordered|unnamed_addr|uselistorder|uwtable|volatile|weak|weak_odr|willreturn|win64cc|within|write|writeonly|x86_64_sysvcc|x86_fastcallcc|x86_stdcallcc|x86_thiscallcc|zeroext)\\b"
+        },
+        {
+          "name": "storage.modifier.llvm",
+          "match": "\\b(?:alias|asm|attributes|blockaddress|comdat|datalayout|deplibs|ifunc|memory|prefix|prologue|source_filename|target|triple)\\b"
+        },
+        {
+          "name": "keyword.operator.assignment.llvm",
+          "match": "="
+        }
+      ]
+    },
+    "constants": {
+      "patterns": [
+        {
+          "name": "constant.language.llvm",
+          "match": "\\b(?:false|true|null|none|poison|undef|vscale|zeroinitializer)\\b"
+        },
+        {
+          "name": "constant.other.debug.llvm",
+          "match": "\\b(?:DW_TAG_[A-Za-z0-9_]+|DW_ATE_[A-Za-z0-9_]+|DW_OP_[A-Za-z0-9_]+|DW_LANG_[A-Za-z0-9_]+|DW_VIRTUALITY_[A-Za-z0-9_]+|DIFlag[A-Za-z0-9_]+|DISPFlag[A-Za-z0-9_]+)\\b"
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "name": "constant.numeric.float.llvm",
+          "match": "(?<![-a-zA-Z$._0-9])[-+]?(?:[0-9]+\\.[0-9]*(?:[eE][-+]?[0-9]+)?|0x[HKLMR]?[0-9A-Fa-f]+)(?![-a-zA-Z$._0-9])"
+        },
+        {
+          "name": "constant.numeric.integer.llvm",
+          "match": "(?<![-a-zA-Z$._0-9])[-+]?[0-9]+(?![-a-zA-Z$._0-9])"
+        }
+      ]
+    },
+    "punctuation": {
+      "patterns": [
+        { "name": "punctuation.separator.comma.llvm", "match": "," },
+        { "name": "punctuation.section.group.begin.llvm", "match": "\\(" },
+        { "name": "punctuation.section.group.end.llvm", "match": "\\)" },
+        { "name": "punctuation.section.block.begin.llvm", "match": "[\\[{]" },
+        { "name": "punctuation.section.block.end.llvm", "match": "[\\]}]" },
+        { "name": "punctuation.definition.type.begin.llvm", "match": "<" },
+        { "name": "punctuation.definition.type.end.llvm", "match": ">" },
+        { "name": "punctuation.definition.variable.llvm", "match": "[*]" },
+        { "name": "punctuation.definition.parameters.llvm", "match": "\\.\\.\\." }
+      ]
+    }
+  }
 }
