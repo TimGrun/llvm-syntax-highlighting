@@ -4,6 +4,8 @@ Syntax highlighting for modern LLVM intermediate representation (`.ll`) files in
 
 The grammar distinguishes LLVM symbols and language forms using standard TextMate scopes, producing readable colors across common VS Code themes rather than assigning one style to most IR tokens.
 
+> Recommended to be used alongside the `LLVM IR Language Support` extension by rev.ng Labs for folding range and go-to-definition support
+
 ## Highlighting
 
 - SSA values such as `%result` and `%0`
