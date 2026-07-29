@@ -2,7 +2,7 @@
     "name": "llvm-syntax-highlighting",
     "displayName": "LLVM Syntax Highlighting",
     "description": "Lightweight syntax highlighting for LLVM IR",
-    "version": "0.0.1",
+    "version": "0.0.4",
     "publisher": "colejcummins",
     "icon": "llvmlogo.png",
     "repository": {
