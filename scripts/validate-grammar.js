@@ -106,11 +106,14 @@ for (const expectation of expectations) {
   assertMatches(...expectation);
 }
 
-const fixturePaths = [path.join("lib", "example.ll")];
+const fixturePaths = [path.join("lib", "test.ll"), path.join("lib", "example.ll")];
 const sigilPattern = /(?<![-a-zA-Z$._0-9])[%@!#][-a-zA-Z$._0-9]+/g;
 let sigilCount = 0;
 
 for (const fixturePath of fixturePaths) {
+  if (!fs.existsSync(path.join(root, fixturePath))) {
+    continue;
+  }
   const source = fs.readFileSync(path.join(root, fixturePath), "utf8");
   const sigils = new Set(source.match(sigilPattern) || []);
   const unclassified = [...sigils].filter(
