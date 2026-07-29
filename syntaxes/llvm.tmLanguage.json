@@ -108,7 +108,7 @@
     "types": {
       "patterns": [
         {
-          "name": "storage.type.primitive.llvm",
+          "name": "entity.name.type.llvm",
           "match": "\\b(?:void|half|bfloat|float|double|x86_fp80|fp128|ppc_fp128|label|metadata|x86_mmx|x86_amx|token|ptr|opaque|i[0-9]+)\\b"
         },
         {
